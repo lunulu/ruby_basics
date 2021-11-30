@@ -13,21 +13,9 @@ if a == b || a == c || b == c
   isosceles_triangle = true
 end
 
-if a > b && a > c
-  hypotenuse = a
-  leg_1 = b
-  leg_2 = c
-elsif b > a && b > c
-  hypotenuse = b
-  leg_1 = a
-  leg_2 = c
-elsif c > a && c > b
-  hypotenuse = c
-  leg_1 = a
-  leg_2 = b
-end
+leg_1, leg_2, hypotenuse = [a, b, c].sort
 
-if hypotenuse != nil && hypotenuse ** 2 == leg_1 ** 2 + leg_2 ** 2
+if hypotenuse ** 2 == leg_1 ** 2 + leg_2 ** 2
   right_triangle = true
 end
 
