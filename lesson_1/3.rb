@@ -1,30 +1,25 @@
-puts "Введите длины трех сторон треугольника."
-puts "Длина первой стороны:"
-a = gets.chomp.to_f
-puts "Длина второй стороны:"
-b = gets.chomp.to_f
-puts "Длина третьей стороны:"
-c = gets.chomp.to_f
+puts 'Введите длины трех сторон треугольника.'
+puts 'Длина первой стороны:'
+a = Float(gets.chomp)
+puts 'Длина второй стороны:'
+b = Float(gets.chomp)
+puts 'Длина третьей стороны:'
+c = Float(gets.chomp)
 
-if (a == b && b == c)
-  equilateral_triangle = true
-end
-if a == b || a == c || b == c
-  isosceles_triangle = true
-end
+equilateral_triangle = true if a == b && b == c
 
-leg_1, leg_2, hypotenuse = [a, b, c].sort
+isosceles_triangle = true if a == b || a == c || b == c
 
-if hypotenuse ** 2 == leg_1 ** 2 + leg_2 ** 2
-  right_triangle = true
-end
+leg1, leg2, hypotenuse = [a, b, c].sort
+
+right_triangle = true if hypotenuse**2 == leg1**2 + leg2**2
 
 if equilateral_triangle
-  puts "Треугольник - равнобедренный и равносторонний, но не прямоугольный"
+  puts 'Треугольник - равнобедренный и равносторонний, но не прямоугольный'
 elsif isosceles_triangle && right_triangle
-  puts "Треугольник - равнобедренный и прямоугольный."
+  puts 'Треугольник - равнобедренный и прямоугольный.'
 elsif right_triangle
-  puts "Треугольник - прямоугольный."
+  puts 'Треугольник - прямоугольный.'
 else
-  puts "Треугольник не является ни равнобедренным, ни равносторонним, ни прямоугольным."
+  puts 'Треугольник не является ни равнобедренным, ни равносторонним, ни прямоугольным.'
 end
