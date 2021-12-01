@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 puts 'Введите коэффициенты a,b и c'
 puts 'Коэффициент a:'
 a = Float(gets.chomp)

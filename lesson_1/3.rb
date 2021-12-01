@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 puts 'Введите длины трех сторон треугольника.'
 puts 'Длина первой стороны:'
 a = Float(gets.chomp)

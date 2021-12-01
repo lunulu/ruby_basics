@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 puts 'Введите ваше имя:'
 name = gets.chomp
 puts 'Введите ваш рост:'

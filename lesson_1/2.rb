@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 puts 'Введите длину основания треугольника:'
 base = Float(gets.chomp)
 puts 'Введите длину высоты треугольника:'
