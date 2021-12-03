@@ -2,21 +2,12 @@
 
 # Пока проверять на валидность правильно не умею
 puts 'День?'
-day = Integer(gets)
+day = gets.to_i
 puts 'Месяц?'
-month = Integer(gets)
+month = gets.to_i
 puts 'Год?'
-year = Integer(gets)
+year = gets.to_i
 
 days_in_february = (year % 4).zero? ? 29 : 28
-
-months = {  1 => 31, 2 => days_in_february, 3 => 31, 4 => 30, 5 => 31, 6 => 30,
-            7 => 31, 8 => 31, 9 => 30, 10 => 31, 11 => 30, 12 => 31 }
-
-day_number = day
-months.each do |k, v|
-  break if k == month
-
-  day_number += v
-end
+day_number = [31, days_in_february, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31].take(month - 1).sum + day
 puts "Прошло #{day_number} дней с начала года."
