@@ -35,14 +35,14 @@ class Train
 
   def move_forward
     current_station.send_train(self)
-    next_station.take_train(self)
     @current_position += 1 if next_station
+    current_station.take_train(self)
   end
 
   def move_backward
     current_station.send_train(self)
-    previous_station.take_train(self)
     @current_position -= 1 if previous_station
+    previous_station.take_train(self)
   end
 
   def current_station
