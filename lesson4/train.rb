@@ -30,19 +30,19 @@ class Train
   def add_route(route)
     @route = route
     @current_position = 0
-    @route.stations[@current_position].take_train(self)
+    current_station.take_train(self)
   end
 
   def move_forward
-    @route.stations[@current_position].send_train(self)
-    @current_position += 1 if @route.stations[@current_position] != @route.end_station
-    @route.stations[@current_position].take_train(self)
+    current_station.send_train(self)
+    next_station.take_train(self)
+    @current_position += 1 if current_station != @route.end_station
   end
 
   def move_backward
-    @route.stations[@current_position].send_train(self)
-    @current_position -= 1 if @current_station.positive?
-    @route.stations[@current_position].take_train(self)
+    current_station.send_train(self)
+    previous_station.take_train(self)
+    @current_position -= 1 if @current_position.positive?
   end
 
   def current_station
@@ -54,6 +54,6 @@ class Train
   end
 
   def next_station
-    @route.stations[@current_position + 1] if @route.stations[@current_position] != @route.end_station
+    @route.stations[@current_position + 1] if current_station != @route.end_station
   end
 end
