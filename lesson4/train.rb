@@ -36,13 +36,13 @@ class Train
   def move_forward
     current_station.send_train(self)
     next_station.take_train(self)
-    @current_position += 1 if current_station != @route.end_station
+    @current_position += 1 if next_station
   end
 
   def move_backward
     current_station.send_train(self)
     previous_station.take_train(self)
-    @current_position -= 1 if @current_position.positive?
+    @current_position -= 1 if previous_station
   end
 
   def current_station
