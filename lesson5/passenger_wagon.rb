@@ -3,7 +3,7 @@
 # Пассажирский вагон
 class PassengerWagon < Wagon
   def initialize
-    super # Добавил super, потому что rubocop ругался
+    super
     @type = 'пассажирский'
   end
 end
