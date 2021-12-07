@@ -7,6 +7,7 @@ class Train
   def initialize(number)
     @number = number
     @speed = 0
+    @wagons = []
   end
 
   def accelerate(speed)
