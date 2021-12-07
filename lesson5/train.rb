@@ -2,12 +2,10 @@
 
 # Поезд
 class Train
-  attr_reader :speed, :carriages_number, :type, :route, :current_position
+  attr_reader :speed, :wagons, :type, :route, :current_position
 
-  def initialize(number, type, carriages_number)
+  def initialize(number)
     @number = number
-    @type = type.include?('грузовой') || type.include?('пассажирский') ? type : 'грузовой'
-    @carriages_number = carriages_number
     @speed = 0
   end
 
@@ -19,12 +17,12 @@ class Train
     self.speed = 0
   end
 
-  def attach_carriage
-    self.carriages_number += 1 if speed.zero?
+  def attach_wagon(wagon)
+    wagons << wagon if type == wagon.type
   end
 
-  def detach_carriage
-    self.carriages_number -= 1 if speed.zero? && carriages_number.positive?
+  def detach_wagon
+    wagons.pop
   end
 
   def add_route(route)
@@ -60,5 +58,5 @@ class Train
   protected
 
   # Вынес в protected, чтобы нельзя было использовать сеттеры извне объекта
-  attr_writer :speed, :carriages_number, :type, :route, :current_position
+  attr_writer :speed, :wagons, :type, :route, :current_position
 end
