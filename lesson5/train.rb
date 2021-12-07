@@ -2,7 +2,7 @@
 
 # Поезд
 class Train
-  attr_reader :speed, :wagons, :type, :route, :current_position
+  attr_reader :speed, :wagons, :type, :route, :current_position, :number
 
   def initialize(number)
     @number = number
