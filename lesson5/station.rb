@@ -18,8 +18,8 @@ class Station
   end
 
   def trains_types
-    passenger_trains_number = trains.select { |train| train.type == 'пассажирский' }.sum
-    freight_trains_number = trains.select { |train| train.type == 'грузовой' }.sum
+    passenger_trains_number = trains.select { |train| train.is_a? PassengerTrain }.sum
+    freight_trains_number = trains.select { |train| train.is_a? CargoTrain }.sum
     { 'пассажирский' => passenger_trains_number, 'грузовой' => freight_trains_number }
   end
 
