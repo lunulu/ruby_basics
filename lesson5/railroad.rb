@@ -64,6 +64,7 @@ class RailRoad
 
   # Внутренние части приложения, которые должны быть доступны только внутри класса
   def add_station_app
+    system 'clear'
     puts 'Введите название станции и нажмите Enter, чтобы добавить станцию'
     station = gets.chomp.capitalize
     stations << Station.new(station) unless stations.include?(station)
@@ -74,6 +75,7 @@ class RailRoad
   end
 
   def add_route_app
+    system 'clear'
     puts 'Введите название начальной станции:'
     station1 = station_select
     puts 'Введите название конечной станции:'
@@ -82,6 +84,7 @@ class RailRoad
   end
 
   def add_train_app
+    system 'clear'
     puts 'Номер поезда:'
     number = gets.chomp.to_i
     puts 'Тип поезда (пассажирский или грузовой):'
@@ -89,6 +92,7 @@ class RailRoad
   end
 
   def show_all_routes_stations_list
+    system 'clear'
     i = 1
     routes.each do |route|
       print "#{i} "
@@ -98,6 +102,7 @@ class RailRoad
   end
 
   def add_way_station_app
+    system 'clear'
     puts 'Выберите маршрут, в который хотите добавить промежуточную станцию:'
     show_all_routes_stations_list
     route_number = gets.chomp.to_i - 1
@@ -107,6 +112,7 @@ class RailRoad
   end
 
   def delete_way_station_app
+    system 'clear'
     puts 'Выберите маршрут, в котором хотите удалить промежуточную станцию:'
     show_all_routes_stations_list
     route_number = gets.chomp.to_i - 1
@@ -115,6 +121,7 @@ class RailRoad
   end
 
   def show_all_trains
+    system 'clear'
     i = 1
     trains.each do |train|
       puts "#{i}: №#{train.number}, #{train.type}"
@@ -123,6 +130,7 @@ class RailRoad
   end
 
   def set_route_app
+    system 'clear'
     puts 'Выберите поезд, которому хотите задать маршрут:'
     show_all_trains
     train_number = gets.chomp.to_i - 1
@@ -133,6 +141,7 @@ class RailRoad
   end
 
   def attach_cargo_app
+    system 'clear'
     show_all_trains
     train_number = gets.chomp.to_i - 1
     puts 'Сколько вагонов добавить?'
@@ -145,6 +154,7 @@ class RailRoad
   end
 
   def detach_cargo_app
+    system 'clear'
     show_all_trains
     train_number = gets.chomp.to_i - 1
     puts 'Сколько вагонов отцепить?'
@@ -157,6 +167,7 @@ class RailRoad
   end
 
   def move_train_app
+    system 'clear'
     puts 'Выберите поезд, который хотите перемещать:'
     show_all_trains
     train_number = gets.chomp.to_i - 1
@@ -175,6 +186,7 @@ class RailRoad
   end
 
   def stations_list_app
+    system 'clear'
     stations.each do |station|
       print "#{station.name}, Поезда:"
       station.trains.each { |train| print " №#{train.number}" }
@@ -184,11 +196,13 @@ class RailRoad
   end
 
   def routes_list_app
+    system 'clear'
     show_all_routes_stations_list
     waiting_mode
   end
 
   def trains_list_app
+    system 'clear'
     show_all_trains
     waiting_mode
   end
