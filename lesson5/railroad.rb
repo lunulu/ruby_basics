@@ -19,6 +19,7 @@ class RailRoad
     self.routes = []
     self.trains = []
     loop do
+      system 'clear'
       info
       case gets.chomp
       when '1' then stations_app
@@ -41,6 +42,7 @@ class RailRoad
 
   # Внутренние части приложения, которые должны быть доступны только внутри класса
   def stations_app
+    system 'clear'
     puts 'Здесь можно создавать станции'
     puts 'Введите название станции и нажмите Enter, чтобы добавить станцию'
     puts '\'станции\', чтобы получить список добавленных станций'
@@ -57,6 +59,7 @@ class RailRoad
   end
 
   def routes_app
+    system 'clear'
     puts 'Здесь можно создавать маршруты, добавлять и удалять промежуточные станции'
     puts '1 - Добавить новый маршрут'
     puts '2 - Добавить станцию в существующий маршрут'
@@ -64,8 +67,7 @@ class RailRoad
     puts '\'маршруты\' - Отобразить существующие маршруты'
     puts '\'назад\', чтобы вернуться в главное меню'
     loop do
-      input = gets.chomp.downcase
-      case input
+      case gets.chomp.downcase
       when 'назад' then break
       when 'выход' then break
       when 'маршруты' then routes.each { |route| puts "#{route.starting_station.name} - #{route.end_station.name}" }
@@ -114,13 +116,127 @@ class RailRoad
   end
 
   def trains_app
-    # Создание поездов
-    # Добавление вагонов к поезду
-    # Отцеплять вагоны от поезда
-    # Назначить маршрут поезду
+    system 'clear'
+    puts 'Здесь можно создавать поезда, добавлять и отцеплять вагоны'
+    puts '1 - Создать поезд'
+    puts '2 - Добавить вагоны'
+    puts '3 - Отцепить вагоны'
+    puts '4 - Назначить маршрут поезду'
+    puts '\'поезда\' - Список созданных поездов'
+    puts '\'назад\', чтобы вернуться в главное меню'
+    loop do
+    case gets.chomp.downcase
+    when 'назад' then break
+    when 'выход' then break
+    when 'поезда' then trains.each { |train| puts "№#{train.number} : #{train.type}, количество вагонов: #{train.wagons.length}." }
+    when '1'
+      puts 'Номер поезда:'
+      number = gets.chomp.to_i
+      puts 'Тип поезда (пассажирский или грузовой):'
+      type = gets.chomp.downcase
+      if type == 'пассажирский'
+        trains << PassengerTrain.new(number)
+      else
+        trains << CargoTrain.new(number)
+      end
+      puts 'Поезд создан.'
+    when '2'
+      puts 'Выберите поезд, к которому хотите прицепить вагон:'
+      i = 1
+      trains.each do |train|
+        puts "#{i}: №#{train.number} : #{train.type}"
+        i += 1
+      end
+      train_number = gets.chomp.to_i - 1
+      puts 'Сколько вагонов добавить?'
+      quantity = gets.chomp.to_i
+      if trains[train_number].type == 'пассажирский'
+        quantity.times { trains[train_number].attach_wagon(PassengerWagon.new) }
+      else
+        quantity.times { trains[train_number].attach_wagon(CargoWagon.new) }
+      end
+      puts 'Вагоны прицеплены.'
+    when '3'
+      puts 'Выберите поезд, у которому хотите отцепить вагон:'
+      i = 1
+      trains.each do |train|
+        puts "#{i}: №#{train.number} : #{train.type}"
+        i += 1
+      end
+      train_number = gets.chomp.to_i - 1
+      puts 'Сколько вагонов отцепить?'
+      quantity = gets.chomp.to_i
+      if trains[train_number].type == 'пассажирский'
+        quantity.times { trains[train_number].detach_wagon(PassengerWagon.new) }
+      else
+        quantity.times { trains[train_number].detach_wagon(CargoWagon.new) }
+      end
+      puts 'Вагоны отцеплены.'
+    when '4'
+      puts 'Выберите поезд, которому хотите задать маршрут:'
+      i = 1
+      trains.each do |train|
+        puts "#{i}: №#{train.number} : #{train.type}"
+        i += 1
+      end
+      train_number = gets.chomp.to_i - 1
+      puts 'Выберите маршрут:'
+      i = 1
+      routes.each do |route|
+        puts "#{i}: #{route.starting_station.name} - #{route.end_station.name}"
+        i += 1
+      end
+      route_number = gets.chomp.to_i - 1
+      trains[train_number].add_route(routes[route_number])
+      puts 'Начальная станция поезда задана.'
+    else puts 'Неверный ввод.'
+    end
+    end
   end
 
   def control_app
+    system 'clear'
+    puts 'Здесь можно создавать перемещать поезда по маршруту и получать информацию о станциях'
+    puts '1 - Перемещать поезд'
+    puts '2 - Список станций'
+    puts '3 - Список поездов на выбранной станции'
+    puts '\'назад\', чтобы вернуться в главное меню'
+    loop do
+      case gets.chomp.downcase
+      when 'назад' then break
+      when 'выход' then break
+      when '1'
+        puts 'Выберите поезд, который хотите перемещать:'
+        i = 1
+        trains.each do |train|
+          puts "#{i}: №#{train.number} : #{train.type}"
+          i += 1
+        end
+        train_number = gets.chomp.to_i - 1
+        loop do
+          puts '\'вперед\' - двигаться вперед'
+          puts '\'назад\' - двигаться назад'
+          puts '\'стоп\' - остановиться'
+          case gets.chomp.downcase
+          when 'вперед' then trains[train_number].move_forward
+          when 'назад' then trains[train_number].move_backward
+          when 'стоп' then break
+          else puts 'Неверный ввод.'
+          end
+        end
+      when '2' then stations.each { |station| puts station.name }
+      when '3'
+        puts 'Выберите станцию, чтобы увидеть список поездов на ней:'
+        i = 1
+        stations.each do |station|
+          puts "#{i}: #{station.name}"
+          i += 1
+        end
+        station_number = gets.chomp.to_i - 1
+        stations[station_number].trains.each { |train| puts "№#{train.number} : #{train.type}, количество вагонов: #{train.wagons.length}." }
+      else puts 'Неверный ввод.'
+      end
+    end
     # Перемещать поезд по маршруту вперед и назад
     # Просматривать список станций и список поездов на станции
   end
