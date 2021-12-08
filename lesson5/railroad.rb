@@ -14,6 +14,7 @@ class RailRoad
   attr_reader :stations, :routes, :trains
 
   def app
+    system 'clear'
     puts 'Программа для управления железной дорогой.'
     self.stations = []
     self.routes = []
