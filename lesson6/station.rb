@@ -11,7 +11,6 @@ class Station
   end
 
   self.stations = []
-  self.counter = 0
 
   def self.all
     stations

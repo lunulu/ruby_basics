@@ -7,8 +7,6 @@ class Train
 
   attr_reader :speed, :wagons, :type, :route, :current_position, :number
 
-  self.counter = 0
-
   def self.find(number)
     ObjectSpace.each_object(self).to_a.select { |train| train.number == number }.first
   end

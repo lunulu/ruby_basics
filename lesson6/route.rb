@@ -6,8 +6,6 @@ class Route
 
   attr_reader :stations
 
-  self.counter = 0
-
   def initialize(starting_station, end_station)
     self.stations = [starting_station, end_station]
     register_instance

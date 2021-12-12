@@ -9,7 +9,11 @@ module InstanceCounter
 
   # Методы класса
   module ClassMethods
-    attr_accessor :counter
+    attr_writer :counter
+
+    def counter
+      @counter ||= 0
+    end
 
     def instances
       counter
@@ -23,5 +27,14 @@ module InstanceCounter
     def register_instance
       self.class.counter += 1
     end
+  end
+end
+
+# TEST
+class Test
+  include InstanceCounter
+
+  def initialize
+    register_instance
   end
 end
