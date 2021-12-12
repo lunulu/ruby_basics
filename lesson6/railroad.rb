@@ -71,9 +71,10 @@ class RailRoad
     system 'clear'
     puts 'Введите название станции и нажмите Enter, чтобы добавить станцию'
     station = gets.chomp.capitalize
-    unless stations.select { |st| st.name == station }.first || station.gsub(/\s+/, '') == ''
-      stations << Station.new(station)
-    end
+    return if station.gsub(/\s+/, '') == ''
+    return if stations.select { |st| st.name == station }.first
+
+    stations << Station.new(station)
   end
 
   def station_select
