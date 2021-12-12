@@ -29,12 +29,3 @@ module InstanceCounter
     end
   end
 end
-
-# TEST
-class Test
-  include InstanceCounter
-
-  def initialize
-    register_instance
-  end
-end
