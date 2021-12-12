@@ -2,15 +2,9 @@
 
 # Информация о компании-производителе
 module CompanyManufacturerInfo
-  def self.included(base)
-    base.include InstanceMethods
-  end
+  attr_reader :company_manufacturer_name
 
-  module InstanceMethods
-    attr_reader :company_manufacturer_name
+  protected
 
-    protected
-
-    attr_writer :company_manufacturer_name
-  end
+  attr_writer :company_manufacturer_name
 end
