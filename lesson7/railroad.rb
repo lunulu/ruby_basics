@@ -71,11 +71,7 @@ class RailRoad
   def add_station_app
     system 'clear'
     puts 'Введите название станции и нажмите Enter, чтобы добавить станцию'
-    station = gets.chomp.capitalize
-    return if station.gsub(/\s+/, '') == ''
-    return if stations.select { |st| st.name == station }.first
-
-    stations << Station.new(station)
+    stations << Station.new(gets.chomp.capitalize)
   end
 
   def station_select
