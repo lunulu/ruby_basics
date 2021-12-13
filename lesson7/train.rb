@@ -4,8 +4,11 @@
 class Train
   include CompanyManufacturerInfo
   include InstanceCounter
+  include ValidCheck
 
   attr_reader :speed, :wagons, :type, :route, :current_position, :number
+
+  NUMBER_FORMAT = /[а-я0-9]{3}-?[а-я0-9]{2}/i.freeze
 
   def self.find(number)
     ObjectSpace.each_object(self).to_a.select { |train| train.number == number }.first
@@ -15,6 +18,7 @@ class Train
     @number = number
     @speed = 0
     @wagons = []
+    validate!
     register_instance
   end
 
@@ -66,6 +70,9 @@ class Train
 
   protected
 
-  # Вынес в protected, чтобы нельзя было использовать сеттеры извне объекта
   attr_writer :speed, :wagons, :type, :route, :current_position
+
+  def validate!
+    raise 'Number has invalid format' if number !~ NUMBER_FORMAT
+  end
 end
