@@ -95,8 +95,13 @@ class RailRoad
     system 'clear'
     puts 'Номер поезда:'
     number = gets.chomp
-    puts 'Тип поезда (пассажирский или грузовой):'
-    trains << gets.chomp.downcase == 'пассажирский' ? PassengerTrain.new(number) : CargoTrain.new(number)
+    puts 'Тип поезда:'
+    puts '1 - пассажирский'
+    puts '2 - грузовой'
+    case gets.chomp.to_i
+    when 1 then trains << PassengerTrain.new(number)
+    when 2 then trains << CargoTrain.new(number)
+    end
   end
 
   def show_all_routes_stations_list
