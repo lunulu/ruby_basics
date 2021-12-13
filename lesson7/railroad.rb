@@ -74,17 +74,14 @@ class RailRoad
     stations << Station.new(gets.chomp.capitalize)
   end
 
-  def station_select
-    stations.select { |station| station.name == gets.chomp.capitalize }.first
-  end
-
   def add_route_app
     system 'clear'
+    show_all_stations
     puts 'Введите название начальной станции:'
-    station1 = station_select
+    station1 = gets.chomp.capitalize
     puts 'Введите название конечной станции:'
-    station2 = station_select
-    routes << Route.new(station1, station2)
+    station2 = gets.chomp.capitalize
+    routes << Route.new(station1, station2, stations)
   end
 
   def add_train_app
@@ -100,12 +97,13 @@ class RailRoad
     end
   end
 
-  def show_all_routes_stations_list
+  def show_all_routes
     system 'clear'
     i = 1
     routes.each do |route|
       print "#{i} "
-      route.show_route_stations
+      route.stations.each { |station| print "- #{station.name} " }
+      puts
       i += 1
     end
   end
@@ -113,17 +111,17 @@ class RailRoad
   def add_way_station_app
     system 'clear'
     puts 'Выберите маршрут, в который хотите добавить промежуточную станцию:'
-    show_all_routes_stations_list
+    show_all_routes
     route_number = gets.chomp.to_i - 1
     puts 'Введите название промежуточной станции:'
-    way_station = station_select
+    way_station = gets.chomp.capitalize
     routes[route_number].add_way_station(way_station)
   end
 
   def delete_way_station_app
     system 'clear'
     puts 'Выберите маршрут, в котором хотите удалить промежуточную станцию:'
-    show_all_routes_stations_list
+    show_all_routes
     route_number = gets.chomp.to_i - 1
     puts 'Выберите станцию, которую хотите удалить:'
     routes[route_number].delete_way_station(gets.chomp.capitalize)
@@ -133,8 +131,16 @@ class RailRoad
     system 'clear'
     i = 1
     trains.each do |train|
-      puts "#{i}: №#{train.number}, #{train.type}"
+      puts "#{i}: №#{train.number}, #{train.type}, вагонов: #{train.wagons.length}"
       i += 1
+    end
+  end
+
+  def show_all_stations
+    stations.each do |station|
+      print "#{station.name}, Поезда:"
+      station.trains.each { |train| print " №#{train.number}" }
+      puts
     end
   end
 
@@ -143,8 +149,9 @@ class RailRoad
     puts 'Выберите поезд, которому хотите задать маршрут:'
     show_all_trains
     train_number = gets.chomp.to_i - 1
+    system 'clear'
     puts 'Выберите маршрут:'
-    show_all_routes_stations_list
+    show_all_routes
     route_number = gets.chomp.to_i - 1
     trains[train_number].add_route(routes[route_number])
   end
@@ -167,12 +174,7 @@ class RailRoad
     show_all_trains
     train_number = gets.chomp.to_i - 1
     puts 'Сколько вагонов отцепить?'
-    quantity = gets.chomp.to_i
-    if trains[train_number].type == 'пассажирский'
-      quantity.times { trains[train_number].detach_wagon(PassengerWagon.new) }
-    else
-      quantity.times { trains[train_number].detach_wagon(CargoWagon.new) }
-    end
+    gets.chomp.to_i.times { trains[train_number].detach_wagon}
   end
 
   def move_train_app
@@ -196,17 +198,13 @@ class RailRoad
 
   def stations_list_app
     system 'clear'
-    stations.each do |station|
-      print "#{station.name}, Поезда:"
-      station.trains.each { |train| print " №#{train.number}" }
-      puts
-    end
+    show_all_stations
     waiting_mode
   end
 
   def routes_list_app
     system 'clear'
-    show_all_routes_stations_list
+    show_all_routes
     waiting_mode
   end
 
@@ -242,7 +240,7 @@ class RailRoad
 
   def create_routes(stations)
     routes = []
-    4.times { |i| routes << Route.new(stations[i], stations[i + 4]) }
+    4.times { |i| routes << Route.new(stations[i], stations[i + 4], stations) }
     add_way_stations!(routes)
     routes
   end
@@ -258,8 +256,8 @@ class RailRoad
 
   def create_trains
     trains = []
-    passenger_train = PassengerTrain.new(1)
-    cargo_train = CargoTrain.new(2)
+    passenger_train = PassengerTrain.new('АА1-БВ')
+    cargo_train = CargoTrain.new('ТГП-17')
     3.times { passenger_train.attach_wagon(PassengerWagon.new) }
     10.times { cargo_train.attach_wagon(CargoWagon.new) }
     trains.push(passenger_train, cargo_train)

@@ -3,25 +3,25 @@
 # Маршрут
 class Route
   include InstanceCounter
+  include ValidCheck
 
-  attr_reader :stations
+  attr_reader :stations, :station_pool
 
-  def initialize(starting_station, end_station)
-    self.stations = [starting_station, end_station]
+  def initialize(name1, name2, station_pool)
+    @station_pool = station_pool
+    station1 = station_select(name1)
+    station2 = station_select(name2)
+    self.stations = [station1, station2]
+    validate!
     register_instance
   end
 
-  def add_way_station(station)
-    stations.insert(1, station)
+  def add_way_station(name)
+    stations.insert(-2, station_select(name))
   end
 
-  def delete_way_station(station)
-    stations.delete(station) if station != stations.first || stations.last
-  end
-
-  def show_route_stations
-    stations.each { |station| print "- #{station.name} " }
-    puts
+  def delete_way_station(name)
+    stations.delete(station_select(name)) if name != stations.first.name && name != stations.last.name
   end
 
   def starting_station
@@ -34,6 +34,17 @@ class Route
 
   protected
 
-  # Вынес в protected, чтобы нельзя было использовать сеттеры извне объекта
-  attr_writer :stations
+  attr_writer :stations, :station_pool
+
+  def station_select(name)
+    station_pool.select { |st| st.name == name }.first
+  end
+
+  # def station_exists?(name)
+  #   !station_select(name).nil?
+  # end
+
+  def validate!
+    raise 'The route must have at least 2 stations' if stations.length < 2
+  end
 end
