@@ -3,6 +3,7 @@
 # Станция
 class Station
   include InstanceCounter
+  include ValidCheck
 
   attr_reader :trains, :name
 
@@ -19,8 +20,9 @@ class Station
   end
 
   def initialize(name)
-    @name = name
+    @name = name.capitalize
     @trains = []
+    validate!
     self.class.stations << self
     register_instance
   end
@@ -41,6 +43,15 @@ class Station
 
   protected
 
-  # Вынес в protected, чтобы нельзя было использовать сеттеры извне объекта
   attr_writer :trains, :name
+
+  # Решил разделить проверки, так как не смог исправить ошибку уникальности через .valid?
+  def init_validate!
+    validate!
+    raise 'The name must be unique' if self.class.stations.select { |st| st.name == name }.size == 1
+  end
+
+  def validate!
+    raise 'The name must contain letters or numbers' if name.gsub(/\s+/, '') == ''
+  end
 end
