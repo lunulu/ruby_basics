@@ -86,14 +86,21 @@ class RailRoad
 
   def add_train_app
     system 'clear'
-    puts 'Номер поезда:'
-    number = gets.chomp
-    puts 'Тип поезда:'
-    puts '1 - пассажирский'
-    puts '2 - грузовой'
-    case gets.chomp.to_i
-    when 1 then trains << PassengerTrain.new(number)
-    when 2 then trains << CargoTrain.new(number)
+    begin
+      puts 'Номер поезда:'
+      number = gets.chomp
+      puts 'Тип поезда:'
+      puts '1 - пассажирский'
+      puts '2 - грузовой'
+      case gets.chomp.to_i
+      when 1 then trains << PassengerTrain.new(number)
+      when 2 then trains << CargoTrain.new(number)
+      end
+    rescue RuntimeError
+      system 'clear'
+      puts 'Неверный формат номера поезда'
+      puts 'Пример правильного номера: ТГП-12'
+      retry
     end
   end
 
