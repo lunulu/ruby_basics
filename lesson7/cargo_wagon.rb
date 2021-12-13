@@ -3,7 +3,7 @@
 # Грузовой вагон
 class CargoWagon < Wagon
   def initialize
-    super
     @type = 'грузовой'
+    super
   end
 end
