@@ -8,7 +8,7 @@ class Train
 
   attr_reader :speed, :wagons, :type, :route, :current_position, :number
 
-  NUMBER_FORMAT = /[а-я0-9]{3}-?[а-я0-9]{2}/i.freeze
+  NUMBER_FORMAT = /^[а-я0-9]{3}-?[а-я0-9]{2}$/i.freeze
 
   def self.find(number)
     ObjectSpace.each_object(self).to_a.select { |train| train.number == number }.first
@@ -74,5 +74,6 @@ class Train
 
   def validate!
     raise 'Number has invalid format' if number !~ NUMBER_FORMAT
+    raise 'Type has invalid format' if type != 'пассажирский' && type != 'грузовой'
   end
 end

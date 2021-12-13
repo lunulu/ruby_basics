@@ -3,7 +3,7 @@
 # Пассажирский поезд
 class PassengerTrain < Train
   def initialize(number)
-    super
     @type = 'пассажирский'
+    super
   end
 end

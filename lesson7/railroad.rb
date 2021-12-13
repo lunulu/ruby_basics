@@ -94,7 +94,7 @@ class RailRoad
   def add_train_app
     system 'clear'
     puts 'Номер поезда:'
-    number = gets.chomp.to_i
+    number = gets.chomp
     puts 'Тип поезда (пассажирский или грузовой):'
     trains << gets.chomp.downcase == 'пассажирский' ? PassengerTrain.new(number) : CargoTrain.new(number)
   end
