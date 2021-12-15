@@ -25,6 +25,12 @@ class Train
     register_instance
   end
 
+  def iterator(&block)
+    return unless block_given?
+
+    wagons.each { |wagon| block.call(wagon) }
+  end
+
   def accelerate(speed)
     self.speed = speed
   end
