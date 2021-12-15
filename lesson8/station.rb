@@ -9,15 +9,19 @@ class Station
 
   class << self
     attr_accessor :stations
+
+    def all
+      stations
+    end
+
+    def iterator(&block)
+      return unless block_given?
+
+      trains.each { |train| block.call(train) }
+    end
   end
 
   self.stations = []
-
-  def self.all
-    stations
-    # Второй вариант
-    # ObjectSpace.each_object(self).to_a
-  end
 
   def initialize(name)
     @name = name.capitalize
@@ -45,7 +49,6 @@ class Station
 
   attr_writer :trains, :name
 
-  # Решил разделить проверки, так как не смог исправить ошибку уникальности через .valid?
   def init_validate!
     validate!
     raise 'The name must be unique' if self.class.stations.map(&:name).include?(name)
