@@ -32,14 +32,17 @@ class RailRoad
       puts '4 - Добавить станцию в маршрут'
       puts '5 - Удалить станцию из маршрута'
       puts '6 - Назначить маршрут поезду'
-      puts '7 - Добавить вагоны к поезду'
-      puts '8 - Отцепить вагоны от поезда'
+      puts '7 - Добавить вагон'
+      puts '8 - Отцепить вагон'
       puts '9 - Перемещать поезд'
       puts '10 - Список станций'
       puts '11 - Список маршрутов'
       puts '12 - Список поездов'
+      puts '13 - Занять объем/место в вагоне'
       puts '0 - Выйти из программы'
-      case gets.chomp
+      option = gets.chomp
+      system 'clear'
+      case option
       when '1' then add_station_app
       when '2' then add_route_app
       when '3' then add_train_app
@@ -52,6 +55,7 @@ class RailRoad
       when '10' then stations_list_app
       when '11' then routes_list_app
       when '12' then trains_list_app
+      when '13' then occupy_wagon_app
       when '0' then break
       when 'seed' then seed
       else
@@ -60,22 +64,22 @@ class RailRoad
       end
       system 'clear'
     end
-    system 'clear'
   end
 
   private
 
   attr_writer :stations, :routes, :trains
 
-  # Внутренние части приложения, которые должны быть доступны только внутри класса
+  # -------------------------------------------------------------
+
+  # 1
   def add_station_app
-    system 'clear'
     puts 'Введите название станции и нажмите Enter, чтобы добавить станцию'
     stations << Station.new(gets.chomp.capitalize)
   end
 
+  # 2
   def add_route_app
-    system 'clear'
     show_all_stations
     puts 'Введите название начальной станции:'
     station1 = gets.chomp.capitalize
@@ -84,39 +88,25 @@ class RailRoad
     routes << Route.new(station1, station2, stations)
   end
 
+  # 3
   def add_train_app
-    system 'clear'
-    begin
-      puts 'Номер поезда:'
-      number = gets.chomp
-      puts 'Тип поезда:'
-      puts '1 - пассажирский'
-      puts '2 - грузовой'
-      case gets.chomp.to_i
-      when 1 then trains << PassengerTrain.new(number)
-      when 2 then trains << CargoTrain.new(number)
-      end
-    rescue RuntimeError
-      system 'clear'
-      puts 'Неверный формат номера поезда'
-      puts 'Пример правильного номера: ТГП-12'
-      retry
+    puts 'Номер поезда:'
+    number = gets.chomp
+    puts 'Тип поезда:'
+    puts '1 - пассажирский'
+    puts '2 - грузовой'
+    case gets.chomp.to_i
+    when 1 then trains << PassengerTrain.new(number)
+    when 2 then trains << CargoTrain.new(number)
     end
+  rescue RuntimeError
+    system 'clear'
+    puts 'Неверный формат номера поезда'
+    retry
   end
 
-  def show_all_routes
-    system 'clear'
-    i = 1
-    routes.each do |route|
-      print "#{i} "
-      route.stations.each { |station| print "- #{station.name} " }
-      puts
-      i += 1
-    end
-  end
-
+  # 4
   def add_way_station_app
-    system 'clear'
     puts 'Выберите маршрут, в который хотите добавить промежуточную станцию:'
     show_all_routes
     route_number = gets.chomp.to_i - 1
@@ -125,8 +115,8 @@ class RailRoad
     routes[route_number].add_way_station(way_station)
   end
 
+  # 5
   def delete_way_station_app
-    system 'clear'
     puts 'Выберите маршрут, в котором хотите удалить промежуточную станцию:'
     show_all_routes
     route_number = gets.chomp.to_i - 1
@@ -134,25 +124,8 @@ class RailRoad
     routes[route_number].delete_way_station(gets.chomp.capitalize)
   end
 
-  def show_all_trains
-    system 'clear'
-    i = 1
-    trains.each do |train|
-      puts "#{i}: №#{train.number}, #{train.type}, вагонов: #{train.wagons.length}"
-      i += 1
-    end
-  end
-
-  def show_all_stations
-    stations.each do |station|
-      print "#{station.name}, Поезда:"
-      station.trains.each { |train| print " №#{train.number}" }
-      puts
-    end
-  end
-
+  # 6
   def set_route_app
-    system 'clear'
     puts 'Выберите поезд, которому хотите задать маршрут:'
     show_all_trains
     train_number = gets.chomp.to_i - 1
@@ -163,29 +136,31 @@ class RailRoad
     trains[train_number].add_route(routes[route_number])
   end
 
+  # 7
   def attach_cargo_app
-    system 'clear'
     show_all_trains
     train_number = gets.chomp.to_i - 1
-    puts 'Сколько вагонов добавить?'
+    puts 'Количество мест или общий объем вагона:'
     quantity = gets.chomp.to_i
     if trains[train_number].type == 'пассажирский'
-      quantity.times { trains[train_number].attach_wagon(PassengerWagon.new) }
+      trains[train_number].attach_wagon(PassengerWagon.new(quantity))
     else
-      quantity.times { trains[train_number].attach_wagon(CargoWagon.new) }
+      trains[train_number].attach_wagon(CargoWagon.new(quantity))
     end
   end
 
+  # 8
   def detach_cargo_app
-    system 'clear'
     show_all_trains
+    puts 'Номер поезда:'
     train_number = gets.chomp.to_i - 1
-    puts 'Сколько вагонов отцепить?'
-    gets.chomp.to_i.times { trains[train_number].detach_wagon}
+    puts 'Номер вагона:'
+    wagon_number = gets.chomp.to_i
+    trains[train_number].detach_wagon(wagon_number)
   end
 
+  # 9
   def move_train_app
-    system 'clear'
     puts 'Выберите поезд, который хотите перемещать:'
     show_all_trains
     train_number = gets.chomp.to_i - 1
@@ -197,78 +172,112 @@ class RailRoad
     end
   end
 
+  # 10
+  def stations_list_app
+    show_all_stations
+    waiting_mode
+  end
+
+  # 11
+  def routes_list_app
+    show_all_routes
+    waiting_mode
+  end
+
+  # 12
+  def trains_list_app
+    show_all_trains
+    waiting_mode
+  end
+
+  # 13
+  def occupy_wagon_app
+    show_all_trains
+    puts 'Номер поезда:'
+    train_number = gets.chomp.to_i - 1
+    puts 'Номер вагона:'
+    wagon_number = gets.chomp.to_i
+    puts 'Количество занимаемых мест/объема:'
+    quantity = gets.chomp.to_i
+    if trains[train_number].type == 'пассажирский'
+      quantity.times { trains[train_number].select_wagon(wagon_number).take_a_seat }
+    else
+      trains[train_number].select_wagon(wagon_number).occupy_volume(quantity)
+    end
+  end
+
+  # -------------------------------------------------------------
+
+  def show_all_routes
+    i = 1
+    routes.each do |route|
+      print "#{i} "
+      route.stations.each { |station| print "- #{station.name} " }
+      puts
+      i += 1
+    end
+  end
+
+  def show_all_trains
+    i = 1
+    trains.each do |train|
+      puts "#{i}: №#{train.number}, #{train.type}, вагоны:"
+      if train.type == 'пассажирский'
+        train.iterator do |wagon|
+          puts "\t№#{wagon.number}, тип: #{wagon.type}, свободно мест: #{wagon.free_seats}, занято мест: #{wagon.seats_occupied}"
+        end
+      else
+        train.iterator do |wagon|
+          puts "\t№#{wagon.number}, тип: #{wagon.type}, свободно объема: #{wagon.free_volume}, занято объема: #{wagon.volume_occupied}"
+        end
+      end
+      i += 1
+    end
+  end
+
+  def show_all_stations
+    stations.each do |station|
+      puts "#{station.name}, поезда:"
+      station.iterator { |train| puts "\t№#{train.number}, #{train.type}, вагонов: #{train.wagons.length};" }
+    end
+  end
+
   def waiting_mode
     puts
     puts 'Нажмите Enter, чтобы закрыть'
     gets.chomp.to_i
   end
 
-  def stations_list_app
-    system 'clear'
-    show_all_stations
-    waiting_mode
-  end
+  # -------------------------------------------------------------
 
-  def routes_list_app
-    system 'clear'
-    show_all_routes
-    waiting_mode
-  end
-
-  def trains_list_app
-    system 'clear'
-    show_all_trains
-    waiting_mode
-  end
-
-  # Автоматически создает станции, маршруты и поезда
   def seed
-    self.stations = create_stations
-    self.routes = create_routes(stations)
-    self.trains = create_trains
-    system 'clear'
+    create_stations
+    create_routes
+    create_trains
     puts 'Seed успешно активирован.'
     sleep 1.5
-    system 'clear'
-    [stations, routes, trains]
   end
 
   def create_stations
-    stations = []
     stations << Station.new('Москва')
-    stations << Station.new('Санкт-Петербург')
-    stations << Station.new('Новосибирск')
-    stations << Station.new('Екатеринбург')
     stations << Station.new('Казань')
-    stations << Station.new('Нижний Новгород')
-    stations << Station.new('Челябинск')
-    stations << Station.new('Омск')
+    stations << Station.new('Санкт-Петербург')
   end
 
-  def create_routes(stations)
-    routes = []
-    4.times { |i| routes << Route.new(stations[i], stations[i + 4], stations) }
-    add_way_stations!(routes)
-    routes
+  def create_routes
+    routes << Route.new(stations[0].name, stations[2].name, stations)
+    add_way_stations!
   end
 
-  def add_way_stations!(routes)
-    routes[1].add_way_station(stations[1])
-    routes[2].add_way_station(stations[2])
-    routes[2].add_way_station(stations[4])
-    routes[3].add_way_station(stations[3])
-    routes[3].add_way_station(stations[4])
-    routes[3].add_way_station(stations[5])
+  def add_way_stations!
+    routes[0].add_way_station(stations[1].name)
   end
 
   def create_trains
-    trains = []
     passenger_train = PassengerTrain.new('АА1-БВ')
-    cargo_train = CargoTrain.new('ТГП-17')
-    3.times { passenger_train.attach_wagon(PassengerWagon.new) }
-    10.times { cargo_train.attach_wagon(CargoWagon.new) }
-    trains.push(passenger_train, cargo_train)
-    passenger_train.add_route(routes[1])
-    cargo_train.add_route(routes[1])
+    trains.push(passenger_train)
+    passenger_train.add_route(routes[0])
+    passenger_train.attach_wagon(PassengerWagon.new(123))
+    passenger_train.attach_wagon(PassengerWagon.new(456))
   end
 end
