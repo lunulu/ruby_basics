@@ -17,12 +17,6 @@ class Station
     def all
       stations
     end
-
-    def iterator(&block)
-      return unless block_given?
-
-      trains.each { |train| block.call(train) }
-    end
   end
 
   def initialize(name)
@@ -31,6 +25,12 @@ class Station
     init_validate!
     self.class.stations << self
     register_instance
+  end
+
+  def iterator(&block)
+    return unless block_given?
+
+    trains.each { |train| block.call(train) }
   end
 
   def take_train(train)
