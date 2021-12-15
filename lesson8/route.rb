@@ -37,7 +37,7 @@ class Route
   attr_writer :stations, :station_pool
 
   def station_select(name)
-    station_pool.select { |st| st.name == name }.first
+    station_pool.select { |st| st.name == name.capitalize }.first
   end
 
   # def station_exists?(name)

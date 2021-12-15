@@ -39,12 +39,16 @@ class Train
     self.speed = 0
   end
 
+  def select_wagon(number)
+    wagons.select { |wagon| wagon.number == number }.first
+  end
+
   def attach_wagon(wagon)
     wagons << wagon if type == wagon.type
   end
 
-  def detach_wagon
-    wagons.pop
+  def detach_wagon(number)
+    wagons.delete_at(wagons.map(&:number).index(number))
   end
 
   def add_route(route)
