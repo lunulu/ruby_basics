@@ -99,6 +99,8 @@ class RailRoad
     when 1 then trains << PassengerTrain.new(number)
     when 2 then trains << CargoTrain.new(number)
     end
+    puts "Поезд №#{number} создан. Тип: #{trains.last.type}"
+    sleep 1.5
   rescue RuntimeError
     system 'clear'
     puts 'Неверный формат номера поезда'
