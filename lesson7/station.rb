@@ -48,7 +48,7 @@ class Station
   # Решил разделить проверки, так как не смог исправить ошибку уникальности через .valid?
   def init_validate!
     validate!
-    raise 'The name must be unique' if self.class.stations.select { |st| st.name == name }.size == 1
+    raise 'The name must be unique' if self.class.stations.map(&:name).include?(name)
   end
 
   def validate!
