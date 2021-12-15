@@ -22,7 +22,7 @@ class Station
   def initialize(name)
     @name = name.capitalize
     @trains = []
-    validate!
+    init_validate!
     self.class.stations << self
     register_instance
   end
