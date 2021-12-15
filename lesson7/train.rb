@@ -10,8 +10,10 @@ class Train
 
   NUMBER_FORMAT = /^[а-я0-9]{3}-?[а-я0-9]{2}$/i.freeze
 
+  @@trains = []
+
   def self.find(number)
-    ObjectSpace.each_object(self).to_a.select { |train| train.number == number }.first
+    @@trains.select { |train| train.number == number }.first
   end
 
   def initialize(number)
@@ -19,6 +21,7 @@ class Train
     @speed = 0
     @wagons = []
     validate!
+    @@trains << self
     register_instance
   end
 
@@ -74,6 +77,7 @@ class Train
 
   def validate!
     raise 'Number has invalid format' if number !~ NUMBER_FORMAT
+    raise 'Number must be unique' if @@trains.map(&:number).include?(number)
     raise 'Type has invalid format' if type != 'пассажирский' && type != 'грузовой'
   end
 end
