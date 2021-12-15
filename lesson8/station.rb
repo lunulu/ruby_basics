@@ -8,7 +8,11 @@ class Station
   attr_reader :trains, :name
 
   class << self
-    attr_accessor :stations
+    attr_writer :stations
+
+    def stations
+      @stations ||= []
+    end
 
     def all
       stations
@@ -20,8 +24,6 @@ class Station
       trains.each { |train| block.call(train) }
     end
   end
-
-  self.stations = []
 
   def initialize(name)
     @name = name.capitalize
