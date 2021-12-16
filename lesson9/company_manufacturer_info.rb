@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Информация о компании-производителе
+# Company Manufacturer Info
 module CompanyManufacturerInfo
   attr_reader :company_manufacturer_name
 

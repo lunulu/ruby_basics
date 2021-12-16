@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-# Модуль
+# Instance Counter
 module InstanceCounter
   def self.included(base)
-    base.include InstanceMethods
     base.extend ClassMethods
+    base.include InstanceMethods
   end
 
-  # Методы класса
+  # Class methods
   module ClassMethods
     attr_writer :instances
 
@@ -16,7 +16,7 @@ module InstanceCounter
     end
   end
 
-  # Инстанс-методы
+  # Instance methods
   module InstanceMethods
     protected
 

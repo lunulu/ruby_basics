@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Грузовой вагон
+# Cargo Wagon
 class CargoWagon < Wagon
   attr_reader :total_volume, :volume_occupied
 

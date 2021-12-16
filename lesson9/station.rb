@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Станция
+# Station
 class Station
   include InstanceCounter
   include ValidCheck

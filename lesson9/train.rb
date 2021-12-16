@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-# Поезд
+# Train
 class Train
   include CompanyManufacturerInfo
   include InstanceCounter
   include ValidCheck
 
-  attr_reader :speed, :wagons, :type, :route, :current_position, :number
-
   NUMBER_FORMAT = /^[а-я0-9]{3}-?[а-я0-9]{2}$/i.freeze
+
+  attr_reader :speed, :wagons, :type, :route, :current_position, :number
 
   @@trains = []
 

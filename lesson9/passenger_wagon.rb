@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Пассажирский вагон
+# Passenger Wagon
 class PassengerWagon < Wagon
   attr_reader :number_of_seats, :seats_occupied
 

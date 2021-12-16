@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Маршрут
+# Route
 class Route
   include InstanceCounter
   include ValidCheck
@@ -39,10 +39,6 @@ class Route
   def station_select(name)
     station_pool.select { |st| st.name == name.capitalize }.first
   end
-
-  # def station_exists?(name)
-  #   !station_select(name).nil?
-  # end
 
   def validate!
     raise 'The route must have at least 2 stations' if stations.length < 2

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Грузовой поезд
+# Cargo Train
 class CargoTrain < Train
   def initialize(number)
     @type = 'грузовой'

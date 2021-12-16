@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Пассажирский поезд
+# Passenger Train
 class PassengerTrain < Train
   def initialize(number)
     @type = 'пассажирский'

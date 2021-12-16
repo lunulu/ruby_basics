@@ -12,7 +12,7 @@ require_relative 'wagon'
 require_relative 'cargo_wagon'
 require_relative 'passenger_wagon'
 
-# Железная дорога
+# Railroad
 class RailRoad
   attr_reader :stations, :routes, :trains
 
@@ -25,21 +25,7 @@ class RailRoad
     sleep 1.5
     loop do
       system 'clear'
-      puts 'Наберите на клавитуре и нажмите Enter, чтобы выбрать действие:'
-      puts '1 - Создать станцию'
-      puts '2 - Создать маршрут'
-      puts '3 - Создать поезд'
-      puts '4 - Добавить станцию в маршрут'
-      puts '5 - Удалить станцию из маршрута'
-      puts '6 - Назначить маршрут поезду'
-      puts '7 - Добавить вагон'
-      puts '8 - Отцепить вагон'
-      puts '9 - Перемещать поезд'
-      puts '10 - Список станций'
-      puts '11 - Список маршрутов'
-      puts '12 - Список поездов'
-      puts '13 - Занять объем/место в вагоне'
-      puts '0 - Выйти из программы'
+      options_message
       option = gets.chomp
       system 'clear'
       case option
@@ -248,6 +234,24 @@ class RailRoad
     puts
     puts 'Нажмите Enter, чтобы закрыть'
     gets.chomp.to_i
+  end
+
+  def options_message
+    puts 'Наберите на клавитуре и нажмите Enter, чтобы выбрать действие:'
+    puts '1 - Создать станцию'
+    puts '2 - Создать маршрут'
+    puts '3 - Создать поезд'
+    puts '4 - Добавить станцию в маршрут'
+    puts '5 - Удалить станцию из маршрута'
+    puts '6 - Назначить маршрут поезду'
+    puts '7 - Добавить вагон'
+    puts '8 - Отцепить вагон'
+    puts '9 - Перемещать поезд'
+    puts '10 - Список станций'
+    puts '11 - Список маршрутов'
+    puts '12 - Список поездов'
+    puts '13 - Занять объем/место в вагоне'
+    puts '0 - Выйти из программы'
   end
 
   # -------------------------------------------------------------
