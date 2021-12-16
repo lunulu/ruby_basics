@@ -13,7 +13,7 @@ class Train
   @@trains = []
 
   def self.find(number)
-    @@trains.select { |train| train.number == number }.first
+    @@trains.detect { |train| train.number == number }
   end
 
   def initialize(number)
@@ -40,7 +40,7 @@ class Train
   end
 
   def select_wagon(number)
-    wagons.select { |wagon| wagon.number == number }.first
+    wagons.detect { |wagon| wagon.number == number }
   end
 
   def attach_wagon(wagon)

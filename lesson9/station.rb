@@ -42,9 +42,8 @@ class Station
   end
 
   def trains_types
-    passenger_trains_number = trains.select { |train| train.is_a? PassengerTrain }.sum
-    freight_trains_number = trains.select { |train| train.is_a? CargoTrain }.sum
-    { 'пассажирский' => passenger_trains_number, 'грузовой' => freight_trains_number }
+    trains_list = trains.map(&:class)
+    { 'пассажирский' => trains_list.count(PassengerTrain), 'грузовой' => trains_list.count(CargoTrain) }
   end
 
   protected
