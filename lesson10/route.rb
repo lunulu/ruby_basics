@@ -3,7 +3,7 @@
 # Route
 class Route
   include InstanceCounter
-  include ValidCheck
+  include Validation
 
   attr_reader :stations, :station_pool
 

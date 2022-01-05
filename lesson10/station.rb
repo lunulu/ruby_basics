@@ -3,7 +3,10 @@
 # Station
 class Station
   include InstanceCounter
-  include ValidCheck
+  include Validation
+
+  FORMAT = /^[а-я]{2,20}$/i.freeze
+  TYPE = String
 
   attr_reader :trains, :name
 
@@ -53,9 +56,5 @@ class Station
   def init_validate!
     validate!
     raise 'The name must be unique' if self.class.stations.map(&:name).include?(name)
-  end
-
-  def validate!
-    raise 'The name must contain letters or numbers' if name.gsub(/\s+/, '') == ''
   end
 end

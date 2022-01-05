@@ -3,7 +3,7 @@
 # Wagon
 class Wagon
   include CompanyManufacturerInfo
-  include ValidCheck
+  include Validation
 
   attr_reader :type, :number
 

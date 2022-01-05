@@ -4,9 +4,9 @@
 class Train
   include CompanyManufacturerInfo
   include InstanceCounter
-  include ValidCheck
+  include Validation
 
-  NUMBER_FORMAT = /^[а-я0-9]{3}-?[а-я0-9]{2}$/i.freeze
+  FORMAT = /^[а-я0-9]{3}-?[а-я0-9]{2}$/i.freeze
 
   attr_reader :speed, :wagons, :type, :route, :current_position, :number
 
@@ -86,7 +86,7 @@ class Train
   attr_writer :speed, :wagons, :type, :route, :current_position
 
   def validate!
-    raise 'Number has invalid format' if number !~ NUMBER_FORMAT
+    raise 'Number has invalid format' if number !~ FORMAT
     raise 'Number must be unique' if @@trains.map(&:number).include?(number)
     raise 'Type has invalid format' if type != 'пассажирский' && type != 'грузовой'
   end
