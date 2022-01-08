@@ -5,10 +5,9 @@ class Station
   include InstanceCounter
   include Validation
 
-  FORMAT = /^[а-я]{2,20}$/i.freeze
-  TYPE = String
-
   attr_reader :trains, :name
+
+  validate :name, :presence
 
   class << self
     attr_writer :stations
