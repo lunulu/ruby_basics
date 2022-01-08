@@ -9,9 +9,12 @@ module Validation
 
   # Class methods
   module ClassMethods
-    def validate(var_name, validation_type, params = nil)
+    def validations
       @validations ||= []
-      @validations << { var_name: var_name, validation_type: validation_type, params: params }
+    end
+
+    def validate(var_name, validation_type, params = nil)
+      validations << { var_name: var_name, validation_type: validation_type, params: params }
     end
   end
 
@@ -27,9 +30,10 @@ module Validation
     private
 
     def validate!
-      validations = self.class.instance_variable_get(:@validations)
+      validations = self.class.validations
       validations.each do |validation|
-        send "validate_#{validation[:validation_type]}", validation[:var_name], validation[:params]
+        var = instance_variable_get("@#{validation[:var_name]}")
+        send "validate_#{validation[:validation_type]}", var, validation[:params]
       end
     end
 
@@ -44,19 +48,5 @@ module Validation
     def validate_type(var, type)
       raise 'Переменная не соответствует заданному типу' unless var.is_a? type
     end
-  end
-end
-
-class Test
-  include Validation
-
-  validate :name, :presence
-  validate :age, :type, Integer
-  validate :phone, :format, /^\d{7}$/
-
-  def initialize
-    @name = 'aaaa'
-    @age = 10
-    @phone = '1234567'
   end
 end
